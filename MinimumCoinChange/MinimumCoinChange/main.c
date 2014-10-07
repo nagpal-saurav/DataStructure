@@ -15,14 +15,19 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-int findMinimumCoinChange(int rs, const int (*coinSet) []){
-    int coinSetLength = sizeof(coinSet) / sizeof(int);
+int findMinimumCoinChange(int rs, const int (*coinSetPtr) []){
+    int coinSetLength = sizeof(coinSetPtr) / sizeof(int);
     int minCoinValues[rs+1];
+    memset(minCoinValues, -1, rs+1);
     minCoinValues[0] = 0;
     for(int i = 1; i <= rs ; i++){
         int solution[coinSetLength];
         memset(solution, -1, coinSetLength);
-    
+        for (int j=0; j < coinSetLength; j++) {
+            if((*coinSetPtr)[j] <= i){
+                solution[j] = minCoinValues[i-(*coinSetPtr)[j]] + 1;
+            }
+        }
     }
     return minCoinValues[rs];
 }

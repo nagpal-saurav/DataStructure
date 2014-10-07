@@ -14,3 +14,11 @@ MinimumCoinChange/MinimumCoinChange.xcodeproj/project.xcworkspace/xcuserdata/sau
 *.plist
 
 MinimumCoinChange/MinimumCoinChange.xcodeproj/xcuserdata/sauravnagpal.xcuserdatad/xcschemes/MinimumCoinChange.xcscheme
+
+*.xcbkptlist
+
+*.xcuserstate
+
+MinimumCoinChange/MinimumCoinChange.xcodeproj/project.xcworkspace/xcuserdata/sauravnagpal.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcuserstate
