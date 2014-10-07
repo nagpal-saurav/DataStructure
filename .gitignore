@@ -1,0 +1,16 @@
+
+*.xcworkspacedata
+
+*.xcworkspacedata
+
+*.xccheckout
+
+*.xcuserstate
+
+MinimumCoinChange/MinimumCoinChange.xcodeproj/project.xcworkspace/xcuserdata/sauravnagpal.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcscheme
+
+*.plist
+
+MinimumCoinChange/MinimumCoinChange.xcodeproj/xcuserdata/sauravnagpal.xcuserdatad/xcschemes/MinimumCoinChange.xcscheme
