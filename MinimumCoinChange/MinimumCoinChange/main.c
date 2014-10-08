@@ -26,11 +26,11 @@ int main(int argc, const char * argv[]) {
 int findMinimumCoinChange(int rs, const int coinSetPtr [], size_t coinSetLength){
     int minCoinValues[rs+1];
     int finalSolutiuon = 0;
-    memset(minCoinValues, -1, rs+1);
+    memset(minCoinValues, -1, sizeof(minCoinValues));
     minCoinValues[0] = 0;
     for(int i = 1; i <= rs ; i++){
         int solution[coinSetLength];
-        memset(solution, -1, coinSetLength);
+        memset(solution, -1, sizeof(solution));
         for (int j=0; j < coinSetLength; j++) {
             if(coinSetPtr [j] <= i){
                 solution[j] = minCoinValues[i - coinSetPtr[j]] + 1;
@@ -40,8 +40,8 @@ int findMinimumCoinChange(int rs, const int coinSetPtr [], size_t coinSetLength)
         finalSolutiuon = -1;
         for(int k=0;k < coinSetLength;k++){
             if(solution[k] > 0 ){
-                if(finalSolutiuon == -1 || solution[k] < finalSolutiuon){
-                    finalSolutiuon = solution[k];
+                if(minCoinValues[i] == -1 || solution[k] < minCoinValues[i]){
+                    minCoinValues[i] = solution[k];
                 }
             }
         }
