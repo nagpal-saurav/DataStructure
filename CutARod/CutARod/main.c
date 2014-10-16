@@ -24,17 +24,20 @@ int cutroad(int price[], int rodLength){
     int maxBenefit[rodLength];
     maxBenefit[0] = price[0];
     int solution[rodLength];
-    int finalSolution;
-    memset(solution, -1, rodLength);
-    for (int i = 0;  i < rodLength; i++) {
+    int finalSolution = -1;
+    for (int i = 1;  i < rodLength; i++) {
+        memset(solution, -1, rodLength);
         for (int j=0; j < i; j++) {
             solution[i] = price[j]+maxBenefit[i-j];
         }
         for (int k=0; k<rodLength; k++) {
-            
+            if(solution[k] >= 0){
+                if (finalSolution == -1 || finalSolution < solution[k]){
+                    finalSolution = solution[k];
+                }
+            }
         }
-        
+        maxBenefit[i] = finalSolution;
     }
-    
-    return finalSolution;
+    return maxBenefit[rodLength-1];
 }
