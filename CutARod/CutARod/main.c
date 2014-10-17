@@ -21,16 +21,16 @@ int main(int argc, const char * argv[]) {
 }
 
 int cutroad(int price[], int rodLength){
-    int maxBenefit[rodLength];
-    maxBenefit[0] = price[0];
+    int maxBenefit[rodLength+1];
     int solution[rodLength];
     int finalSolution = -1;
+    memset(maxBenefit, 0, rodLength);
     for (int i = 1;  i < rodLength; i++) {
         memset(solution, -1, rodLength);
-        for (int j=0; j < i; j++) {
-            solution[i] = price[j]+maxBenefit[i-j];
+        for (int j=0; j <= i; j++) {
+            solution[j] = price[j]+maxBenefit[i-j];
         }
-        for (int k=0; k<rodLength; k++) {
+        for (int k=0; k<=i; k++) {
             if(solution[k] >= 0){
                 if (finalSolution == -1 || finalSolution < solution[k]){
                     finalSolution = solution[k];
@@ -39,5 +39,5 @@ int cutroad(int price[], int rodLength){
         }
         maxBenefit[i] = finalSolution;
     }
-    return maxBenefit[rodLength-1];
+    return maxBenefit[rodLength];
 }
