@@ -23,16 +23,18 @@ int main(int argc, const char * argv[]) {
 }
 
 int calculateMaximumSubSequence(int array[], int size){
-    int max[size];
+    int max[size]; // Store max sub sequence at each index. We do not need this as Kadan's algo but for dynamic approch we are using that
     memset(max, 0, size);
-    int maximumSubsequence = 0;
+    int maximumSubsequence = 0; // Store max sub sequence for array
     max[0] = array[0];
     for(int i = 1; i < size;i++){
+        // Check if previous max sib sequence is greater than zero. If it is negative then our condition solution[i]+a[i+1] is always less than a[i+1]
         if(max[i - 1] > 0){
             max[i] = max[i-1]+array[i];
         }else{
             max[i] = array[i];
         }
+        // Store the max sub sequence for array
         if(maximumSubsequence < max[i]){
             maximumSubsequence = max[i];
         }
