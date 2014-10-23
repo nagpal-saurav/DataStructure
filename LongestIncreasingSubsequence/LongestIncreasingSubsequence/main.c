@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 
+//Use as a heap for store the longest sequence for index
 typedef struct lsIncreasingSequence_struct{
     int longesubSequence[10];
     int longesubequenceLength;
@@ -30,23 +31,28 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
+//return the longest sequence
 lsIncreasingSequence longIncSubsequence(int sequence[], int seqL){
-    lsIncreasingSequence lsubsequences[seqL+1];
-    int finalsubsequenceLength = 0;
-    int finalSubSequenceIndex = -1;
-    lsubsequences[0].longesubSequence[0] = 0;
-    lsubsequences[0].longesubequenceLength = 1;
+    lsIncreasingSequence lsubsequences[seqL+1]; //Store the longest sequence for each index
+    int finalsubsequenceLength = 0;      //Store the longest sequence length
+    int finalSubSequenceIndex = -1;       //Store the longest sequence index
+    lsubsequences[0].longesubSequence[0] = sequence[0]; //First sequence have only first element
+    lsubsequences[0].longesubequenceLength = 1;  //First sequence have only first element so count is 1
+    
+    //Loop Start from second element and count longest sequence for each index
     for (int i=1; i<seqL; i++) {
+        //Loop check for all the possible sub sequence and check if length is largest
         for(int j=0; j <i ; j++){
             if(sequence[i] > sequence[j]){
                 finalsubsequenceLength = lsubsequences[j].longesubequenceLength + 1;
                 if(finalsubsequenceLength > lsubsequences[i].longesubequenceLength){
                     lsubsequences[i].longesubequenceLength = finalsubsequenceLength;
-                    finalSubSequenceIndex  = j;
+                    finalSubSequenceIndex  = j; //Store the largest increasing sub sequence for index i
                 }
             }
         }
         
+        //loop copy all the elements of longest sub sequence of i to index i of heap
         if(finalSubSequenceIndex != -1){
             int k = 0;
             for(; k < lsubsequences[i].longesubequenceLength-1; k++){
@@ -59,6 +65,7 @@ lsIncreasingSequence longIncSubsequence(int sequence[], int seqL){
         
     }
     
+    //loop calculate longest increasing sub sequence from all the indexs in a heap
     finalsubsequenceLength = 0;
     for (int k=0; k<seqL; k++) {
         if(lsubsequences[k].longesubequenceLength > finalsubsequenceLength){
@@ -66,6 +73,6 @@ lsIncreasingSequence longIncSubsequence(int sequence[], int seqL){
             finalSubSequenceIndex = k;
         }
     }
-    
+    //return the longest sub sequence heap element
     return lsubsequences[finalSubSequenceIndex];
 }
