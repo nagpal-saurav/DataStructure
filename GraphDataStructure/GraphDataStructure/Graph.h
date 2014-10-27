@@ -27,6 +27,10 @@ struct graph_vertex_struct{
     char*      vertexName;
 };
 
+struct graph_vertex_edge{
+    int      weight;
+};
+
 typedef enum {
    graph_storage_adjacency_matrix,
    graph_storage_adjacency_list
@@ -34,7 +38,7 @@ typedef enum {
 
 
 SNGraph* newGraph(graph_storage_type_e type, graph_vertex_count count);
-bool addVertex(SNGraph *graph, const char* name);
-bool addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vertex2);
+SNGraphVertex* addVertex(SNGraph *graph, const char* name);
+SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vertex2);
 
 #endif /* defined(__GraphDataStructure__Graph__) */
