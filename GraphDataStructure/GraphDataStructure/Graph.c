@@ -99,15 +99,16 @@ SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vert
         case graph_storage_adjacency_list:{
             int index1 = findVertexIndex(graph, vertex1);
             if(index1 != Invalid_Index){
-                adjacency_head* graphBuf =(adjacency_head*) graph->graph_data->graph;
+                adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
                 adjacency_list* newEdge = newAdjacencyEdge(vertex2);
                 newEdge->data = data;
-                if(graphBuf->degreeOfvertex == 0){
-                    graphBuf->headVertex = newEdge;
+                if(graphBuf[index1]->degreeOfvertex == 0){
+                    graphBuf[index1]->headVertex = newEdge;
                 }else{
-                    newEdge->next_vertex = graphBuf->headVertex->next_vertex;
-                    graphBuf->headVertex->next_vertex = newEdge->next_vertex;
+                    newEdge->next_vertex = graphBuf[index1]->headVertex->next_vertex;
+                    graphBuf[index1]->headVertex->next_vertex = newEdge->next_vertex;
                 }
+                graphBuf[index1]->degreeOfvertex++;
             }
             break;
         }
@@ -117,6 +118,35 @@ SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vert
     
 }
 
+void displayGraph(SNGraph *graph){
+    if(!graph){
+        printf("No Graph data");
+    }
+    switch (graph->graph_data->type) {
+        case graph_storage_adjacency_matrix:{
+            break;
+        }
+        case graph_storage_adjacency_list:{
+            int verticesCount = graph->graph_data->currentCount;
+            adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
+            for (int i= 0; i < verticesCount; i++) {
+                SNGraphVertex *vertices = graph->graph_data->vertices[i];
+                adjacency_list *neighbour = (adjacency_list *)graphBuf[i];
+                printf("%s is connected to the",vertices->vertexName);
+                while (neighbour != NULL) {
+                   printf("->%s",neighbour->toVertex->vertexName);
+                }
+                 printf("\n");
+            }
+            break;
+        }
+            
+    }
+}
+
+/*
+ *PRIVATE FUNCTION
+ */
 bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex){
     bool currentIndex = graph->graph_data->currentCount;
     if(currentIndex < graph->vertexCount){
@@ -124,6 +154,7 @@ bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex){
         vertices[currentIndex] = vertex;
         return true;
     }
+    graph->graph_data->currentCount++;
     return false;
 }
 
