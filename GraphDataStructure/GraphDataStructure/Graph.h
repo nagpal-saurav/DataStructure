@@ -39,6 +39,6 @@ typedef enum {
 
 SNGraph* newGraph(graph_storage_type_e type, graph_vertex_count count);
 SNGraphVertex* addVertex(SNGraph *graph, const char* name);
-SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vertex2);
+SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vertex2, int weight);
 
 #endif /* defined(__GraphDataStructure__Graph__) */
