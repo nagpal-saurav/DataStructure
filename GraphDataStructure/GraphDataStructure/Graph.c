@@ -20,8 +20,8 @@ typedef struct graph_adjacency_head_struct adjacency_head;
 struct graph_internal_struct{
     graph_storage_type_e  type;
     graph_vertex_count    currentCount;
-    SNGraphVertex         **vertices;
-    int                   *graph;
+    void                  **vertices;
+    void                  **graph;
 };
 
 typedef struct adjacency_matrix{
@@ -52,14 +52,20 @@ SNGraph* newGraph(graph_storage_type_e type, graph_vertex_count count){
     newGraph->graph_data->type = type;
     newGraph->vertexCount = count;
     newGraph->graph_data->currentCount = 0;
-    newGraph->graph_data->vertices = (SNGraphVertex**)malloc(sizeof(SNGraphVertex*) * count);
+    newGraph->graph_data->vertices = malloc(sizeof(SNGraphVertex*) * count);
     switch (type) {
         case graph_storage_adjacency_matrix:{
             newGraph->graph_data->graph = malloc(sizeof(int*) * count * matrix_count);
             break;
         }
         case graph_storage_adjacency_list:{
-            newGraph->graph_data->graph  = malloc(sizeof(adjacency_head) * count);
+            newGraph->graph_data->graph  = malloc(sizeof(adjacency_head*) * count);
+            for (int i = 0; i < count; i++) {
+                newGraph->graph_data->graph[i] = malloc(sizeof(adjacency_head));
+                adjacency_head* graphHead = (adjacency_head*)newGraph->graph_data->graph[i];
+                graphHead[i].degreeOfvertex = 0;
+                graphHead[i].headVertex = NULL;
+            }
             break;
         }
         default:
@@ -148,20 +154,19 @@ void displayGraph(SNGraph *graph){
  *PRIVATE FUNCTION
  */
 bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex){
-    bool currentIndex = graph->graph_data->currentCount;
+    int currentIndex = graph->graph_data->currentCount;
     if(currentIndex < graph->vertexCount){
-        SNGraphVertex   **vertices = graph->graph_data->vertices;
-        vertices[currentIndex] = vertex;
+        graph->graph_data->vertices[currentIndex] = vertex;
+        graph->graph_data->currentCount++;
         return true;
     }
-    graph->graph_data->currentCount++;
     return false;
 }
 
 int findVertexIndex(SNGraph* graph, SNGraphVertex* vertex){
     int index = -1;
-    bool currentIndex = graph->graph_data->currentCount;
-    SNGraphVertex   **vertices = graph->graph_data->vertices;
+    int currentIndex = graph->graph_data->currentCount;
+    SNGraphVertex   **vertices = (SNGraphVertex**) graph->graph_data->vertices;
     for (int i = 0; i < currentIndex; i++) {
         SNGraphVertex* addedVertex  = vertices[i];
         if(addedVertex == vertex){
