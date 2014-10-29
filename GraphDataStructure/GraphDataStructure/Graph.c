@@ -181,6 +181,14 @@ void releaseGraph(SNGraph **graphPtr){
     
     switch (graph->graph_data->type) {
         case graph_storage_adjacency_matrix:{
+            int verticesCount = graph->graph_data->currentCount;
+            int** graphBuf = (int**) graph->graph_data->graph;
+            for (int i= 0; i < verticesCount; i++) {
+                free(graphBuf[i]);
+                free(graph->graph_data->vertices[i]);
+            }
+            free(graph->graph_data->vertices);
+            free(graphBuf);
             break;
         }
         case graph_storage_adjacency_list:{

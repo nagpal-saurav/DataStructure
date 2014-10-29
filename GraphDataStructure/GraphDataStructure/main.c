@@ -20,6 +20,7 @@ int main(int argc, const char * argv[]) {
     
     SNGraph* graph_matrix = createSampleGraphMatrix();
     displayGraph(graph_matrix);
+    releaseGraph(&graph_matrix);
     return 0;
 }
 
