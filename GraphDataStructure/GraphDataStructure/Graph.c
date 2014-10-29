@@ -136,16 +136,16 @@ void displayGraph(SNGraph *graph){
             int verticesCount = graph->graph_data->currentCount;
             adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
             for (int i= 0; i < verticesCount; i++) {
-                SNGraphVertex *vertices = graph->graph_data->vertices[i];
+                SNGraphVertex *vertex = graph->graph_data->vertices[i];
                 adjacency_list *neighbour = (adjacency_list *)graphBuf[i]->headVertex;
                 if(neighbour != NULL){
-                    printf("%s is connected to the",vertices->vertexName);
+                    printf("%s is connected to the",vertex->vertexName);
                     while (neighbour != NULL) {
                         printf("->%s",neighbour->toVertex->vertexName);
                         neighbour = neighbour->next_vertex;
                     }
                 }else{
-                    printf("%s does not have any neighbour",vertices->vertexName);
+                    printf("%s does not have any neighbour",vertex->vertexName);
                 }
                 printf("\n");
                 
@@ -154,6 +154,40 @@ void displayGraph(SNGraph *graph){
         }
             
     }
+}
+
+void releaseGraph(SNGraph **graphPtr){
+    SNGraph* graph = *graphPtr;
+    if(!graph){
+        printf("No Graph data");
+    }
+    
+    switch (graph->graph_data->type) {
+        case graph_storage_adjacency_matrix:{
+            break;
+        }
+        case graph_storage_adjacency_list:{
+            int verticesCount = graph->graph_data->currentCount;
+            adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
+            for (int i= 0; i < verticesCount; i++) {
+                SNGraphVertex *vertex = graph->graph_data->vertices[i];
+                adjacency_list *neighbour = (adjacency_list *)graphBuf[i]->headVertex;
+                if(neighbour != NULL){
+                    while (neighbour != NULL) {
+                        adjacency_list* currentNeighbour = neighbour;
+                        neighbour = neighbour->next_vertex;
+                        free(currentNeighbour);
+                    }
+                }
+                free(vertex);
+                free(graphBuf[i]);
+            }
+            free(graph->graph_data->vertices);
+            free(graphBuf);
+            break;
+        }
+    }
+    *graphPtr = NULL;
 }
 
 /*

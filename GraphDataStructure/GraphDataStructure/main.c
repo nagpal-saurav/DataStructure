@@ -42,5 +42,7 @@ int main(int argc, const char * argv[]) {
     addEdge(graph, KushinagarVertex, KanpurVertex, &distance7);
     
     displayGraph(graph);
+    
+    releaseGraph(&graph);
     return 0;
 }
