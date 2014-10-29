@@ -112,7 +112,7 @@ SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vert
                     graphBuf[index1]->headVertex = newEdge;
                 }else{
                     newEdge->next_vertex = graphBuf[index1]->headVertex->next_vertex;
-                    graphBuf[index1]->headVertex->next_vertex = newEdge->next_vertex;
+                    graphBuf[index1]->headVertex->next_vertex = newEdge;
                 }
                 graphBuf[index1]->degreeOfvertex++;
             }
@@ -137,12 +137,18 @@ void displayGraph(SNGraph *graph){
             adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
             for (int i= 0; i < verticesCount; i++) {
                 SNGraphVertex *vertices = graph->graph_data->vertices[i];
-                adjacency_list *neighbour = (adjacency_list *)graphBuf[i];
-                printf("%s is connected to the",vertices->vertexName);
-                while (neighbour != NULL) {
-                   printf("->%s",neighbour->toVertex->vertexName);
+                adjacency_list *neighbour = (adjacency_list *)graphBuf[i]->headVertex;
+                if(neighbour != NULL){
+                    printf("%s is connected to the",vertices->vertexName);
+                    while (neighbour != NULL) {
+                        printf("->%s",neighbour->toVertex->vertexName);
+                        neighbour = neighbour->next_vertex;
+                    }
+                }else{
+                    printf("%s does not have any neighbour",vertices->vertexName);
                 }
-                 printf("\n");
+                printf("\n");
+                
             }
             break;
         }
