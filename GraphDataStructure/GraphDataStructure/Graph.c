@@ -55,7 +55,11 @@ SNGraph* newGraph(graph_storage_type_e type, graph_vertex_count count){
     newGraph->graph_data->vertices = malloc(sizeof(SNGraphVertex*) * count);
     switch (type) {
         case graph_storage_adjacency_matrix:{
-            newGraph->graph_data->graph = malloc(sizeof(int*) * count * matrix_count);
+            int** graph_matrix = calloc(sizeof(int*), count);
+            for (int i = 0; i < count; i++) {
+                graph_matrix[i] = calloc(sizeof(int*), count);
+            }
+            newGraph->graph_data->graph = (void**)graph_matrix;
             break;
         }
         case graph_storage_adjacency_list:{
@@ -130,6 +134,19 @@ void displayGraph(SNGraph *graph){
     }
     switch (graph->graph_data->type) {
         case graph_storage_adjacency_matrix:{
+            int verticesCount = graph->graph_data->currentCount;
+            int** graphBuf = (int**) graph->graph_data->graph;
+            for (int i= 0; i < verticesCount; i++) {
+                 SNGraphVertex *vertex = graph->graph_data->vertices[i];
+                 printf("%s is connected to the",vertex->vertexName);
+                 for (int j= 0; j < verticesCount; j++) {
+                     if((graphBuf[i][j]) > 0){
+                         SNGraphVertex *neighbour = graph->graph_data->vertices[j];
+                         printf("->%s with value:%d",neighbour->vertexName, graphBuf[i][j]);
+                     }
+                }
+                printf("\n");
+            }
             break;
         }
         case graph_storage_adjacency_list:{

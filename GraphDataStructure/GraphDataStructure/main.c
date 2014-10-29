@@ -19,6 +19,7 @@ int main(int argc, const char * argv[]) {
     releaseGraph(&graph_list);
     
     SNGraph* graph_matrix = createSampleGraphMatrix();
+    displayGraph(graph_matrix);
     return 0;
 }
 
