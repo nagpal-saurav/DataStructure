@@ -11,38 +11,40 @@
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    SNGraph* graph = newGraph(graph_storage_adjacency_list, 7);
-    SNGraphVertex* delhiVertex = addVertex(graph, "Delhi");
-    SNGraphVertex* JaipurVertex = addVertex(graph, "Jaipur");
-    SNGraphVertex* LucknowVertex = addVertex(graph, "Lucknow");
-    SNGraphVertex* KanpurVertex = addVertex(graph, "Kanpur");
-    SNGraphVertex* KushinagarVertex = addVertex(graph, "Kushinagar");
-    SNGraphVertex* BodhVertex = addVertex(graph, "Bodh Gaya");
-    SNGraphVertex* KolkataVertex = addVertex(graph, "Kolkata");
+    
+    
+    SNGraph* graph_list = newGraph(graph_storage_adjacency_list, 7);
+    SNGraphVertex* delhiVertex = addVertex(graph_list, "Delhi");
+    SNGraphVertex* JaipurVertex = addVertex(graph_list, "Jaipur");
+    SNGraphVertex* LucknowVertex = addVertex(graph_list, "Lucknow");
+    SNGraphVertex* KanpurVertex = addVertex(graph_list, "Kanpur");
+    SNGraphVertex* KushinagarVertex = addVertex(graph_list, "Kushinagar");
+    SNGraphVertex* BodhVertex = addVertex(graph_list, "Bodh Gaya");
+    SNGraphVertex* KolkataVertex = addVertex(graph_list, "Kolkata");
     
     int distance1 = 500;
-    addEdge(graph, delhiVertex, KanpurVertex, &distance1);
+    addEdge(graph_list, delhiVertex, KanpurVertex, &distance1);
     
     int distance2 = 1200;
-    addEdge(graph, KanpurVertex, KolkataVertex, &distance2);
+    addEdge(graph_list, KanpurVertex, KolkataVertex, &distance2);
     
     int distance3 = 250;
-    addEdge(graph, delhiVertex, JaipurVertex, &distance3);
+    addEdge(graph_list, delhiVertex, JaipurVertex, &distance3);
     
     int distance4 = 400;
-    addEdge(graph, JaipurVertex, LucknowVertex, &distance4);
+    addEdge(graph_list, JaipurVertex, LucknowVertex, &distance4);
     
     int distance5 = 450;
-    addEdge(graph, LucknowVertex, KushinagarVertex, &distance5);
+    addEdge(graph_list, LucknowVertex, KushinagarVertex, &distance5);
     
     int distance6 = 250;
-    addEdge(graph, KushinagarVertex, BodhVertex, &distance6);
+    addEdge(graph_list, KushinagarVertex, BodhVertex, &distance6);
     
     int distance7 = 500;
-    addEdge(graph, KushinagarVertex, KanpurVertex, &distance7);
+    addEdge(graph_list, KushinagarVertex, KanpurVertex, &distance7);
     
-    displayGraph(graph);
+    displayGraph(graph_list);
     
-    releaseGraph(&graph);
+    releaseGraph(&graph_list);
     return 0;
 }
