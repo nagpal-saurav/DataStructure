@@ -94,7 +94,7 @@ SNGraphVertex* addVertex(SNGraph *graph, const char* name);
  * ----------------------------
  *   add a edge in a graph between the vertex
  *
- *   graph: the refrence for the graph in which vertex has to be add
+ *   graph: the refrence for the graph in which edge has to be add
  *   vertex1: the start vertex of edge
  *   vertex2: the end vertex of edge
  *   data   : the data related to the edge (Specefic to weighted graph)

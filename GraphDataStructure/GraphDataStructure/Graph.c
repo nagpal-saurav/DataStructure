@@ -54,10 +54,61 @@ struct graph_adjacency_head_struct{
     adjacency_list      *headVertex;    // It contain refrence for head for all the vertices
 };
 
+/********************************
+ *Private Method Decleration Start
+ ********************************/
+/*
+ * Function: addVertexToGraphVertices
+ * ----------------------------
+ *   add a vertex in a vertices array of graph
+ *
+ *   graph: the refrence for the graph in which vertex has to be add
+ *   vertex: the refrence to the newly created  vertex
+ *
+ *   returns: the retuns whteher vertex added or not.
+ */
 bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex);
+
+/*
+ * Function: findVertexIndex
+ * ----------------------------
+ *   find the index of vertex in graph vertices array
+ *
+ *   graph: the refrence for the graph in which vertex has to be add
+ *   vertex: the refrence of the vertex to be find
+ *
+ *   returns: the retuns the index of vertex if find else -1.
+ */
 int findVertexIndex(SNGraph* graph, SNGraphVertex* vertex);
+
+/*
+ * Function: newAdjacencyEdge
+ * ----------------------------
+ *   create a new edge for adjacency list and return the refrence of the edge
+ *
+ *   vertex: the refrence of the end vertex of the edge
+ *
+ *   returns: the retuns the refrence of adjacency list which contain the end vertex with edge data.
+ */
 adjacency_list* newAdjacencyEdge(SNGraphVertex* vertex);
+
+/*
+ * Function: addEdgeBetweenTheVertex
+ * ----------------------------
+ *   add a edge in a adjacency list graph between the vertex
+ *
+ *   graph: the refrence for the adjacency list graph in which edge has to be add
+ *   vertex1: the start vertex of edge
+ *   vertex2: the end vertex of edge
+ *   data   : the data related to the edge (Specefic to weighted graph)
+ *
+ *   returns: the retuns whteher edge added or not.
+ */
 bool addEdgeBetweenTheVertex(SNGraph* graph, SNGraphVertex* vertex1, SNGraphVertex* vertex2, void* data);
+/********************************
+ *Private Method Decleration End
+ ********************************/
+
 
 SNGraph* newGraph(graph_properties *properties, graph_vertex_count count){
     SNGraph* newGraph = (SNGraph*) malloc(sizeof(SNGraph));
