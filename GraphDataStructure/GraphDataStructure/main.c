@@ -7,6 +7,7 @@
 //
 
 #include "Graph.h"
+#include <stdlib.h>
 #include <stdio.h>
 
 SNGraph* createSampleGraphList();
@@ -25,8 +26,10 @@ int main(int argc, const char * argv[]) {
 }
 
 SNGraph* createSampleGraphList(){
-    
-    SNGraph* graph_list = newGraph(graph_storage_adjacency_list, 7);
+    graph_properties *graphProperties = calloc(sizeof(graph_properties), 1);
+    graphProperties->graphType = graph_type_Undirected;
+    graphProperties->storageType = graph_storage_adjacency_list;
+    SNGraph* graph_list = newGraph(graphProperties, 7);
     SNGraphVertex* delhiVertex = addVertex(graph_list, "Delhi");
     SNGraphVertex* JaipurVertex = addVertex(graph_list, "Jaipur");
     SNGraphVertex* LucknowVertex = addVertex(graph_list, "Lucknow");
@@ -55,11 +58,17 @@ SNGraph* createSampleGraphList(){
     
     int distance7 = 500;
     addEdge(graph_list, KushinagarVertex, KanpurVertex, &distance7);
+    
+    free(graphProperties);
     return graph_list;
 }
 
 SNGraph* createSampleGraphMatrix(){
-    SNGraph* graph_matrix = newGraph(graph_storage_adjacency_matrix, 7);
+    graph_properties *graphProperties = calloc(sizeof(graph_properties), 1);
+    graphProperties->graphType = graph_type_Undirected;
+    graphProperties->storageType = graph_storage_adjacency_matrix;
+    
+    SNGraph* graph_matrix = newGraph(graphProperties, 7);
     
     SNGraphVertex* delhiVertex = addVertex(graph_matrix, "Delhi");
     SNGraphVertex* JaipurVertex = addVertex(graph_matrix, "Jaipur");
@@ -90,5 +99,6 @@ SNGraph* createSampleGraphMatrix(){
     int distance7 = 500;
     addEdge(graph_matrix, KushinagarVertex, KanpurVertex, &distance7);
     
+    free(graphProperties);
     return graph_matrix;
 }

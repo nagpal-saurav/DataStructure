@@ -18,7 +18,8 @@ typedef struct graph_adjacency_list_struct adjacency_list;
 typedef struct graph_adjacency_head_struct adjacency_head;
 
 struct graph_internal_struct{
-    graph_storage_type_e  type;
+    graph_storage_type_e  storageType;
+    graph_type            type;
     graph_vertex_count    currentCount;
     void                  **vertices;
     void                  **graph;
@@ -43,17 +44,18 @@ bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex);
 int findVertexIndex(SNGraph* graph, SNGraphVertex* vertex);
 adjacency_list* newAdjacencyEdge(SNGraphVertex* vertex);
 
-SNGraph* newGraph(graph_storage_type_e type, graph_vertex_count count){
+SNGraph* newGraph(graph_properties *properties, graph_vertex_count count){
     SNGraph* newGraph = (SNGraph*) malloc(sizeof(SNGraph));
     if(!newGraph){
         return NULL;
     }
     newGraph->graph_data = (graph_internal*) malloc(sizeof(graph_internal));
-    newGraph->graph_data->type = type;
+    newGraph->graph_data->type = properties->graphType;
+    newGraph->graph_data->storageType = properties->storageType;
     newGraph->vertexCount = count;
     newGraph->graph_data->currentCount = 0;
     newGraph->graph_data->vertices = malloc(sizeof(SNGraphVertex*) * count);
-    switch (type) {
+    switch (properties->storageType) {
         case graph_storage_adjacency_matrix:{
             int** graph_matrix = calloc(sizeof(int*), count);
             for (int i = 0; i < count; i++) {
@@ -96,7 +98,7 @@ SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vert
     if(vertex1 == vertex2){
         return NULL;
     }
-    switch (graph->graph_data->type) {
+    switch (graph->graph_data->storageType) {
         case graph_storage_adjacency_matrix:{
             int index1 = findVertexIndex(graph, vertex1);
             int index2 = findVertexIndex(graph, vertex2);
@@ -132,7 +134,7 @@ void displayGraph(SNGraph *graph){
     if(!graph){
         printf("No Graph data");
     }
-    switch (graph->graph_data->type) {
+    switch (graph->graph_data->storageType) {
         case graph_storage_adjacency_matrix:{
             int verticesCount = graph->graph_data->currentCount;
             int** graphBuf = (int**) graph->graph_data->graph;
@@ -179,7 +181,7 @@ void releaseGraph(SNGraph **graphPtr){
         printf("No Graph data");
     }
     
-    switch (graph->graph_data->type) {
+    switch (graph->graph_data->storageType) {
         case graph_storage_adjacency_matrix:{
             int verticesCount = graph->graph_data->currentCount;
             int** graphBuf = (int**) graph->graph_data->graph;

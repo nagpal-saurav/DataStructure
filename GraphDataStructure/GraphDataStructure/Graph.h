@@ -36,8 +36,17 @@ typedef enum {
    graph_storage_adjacency_list
 }graph_storage_type_e;
 
+typedef enum {
+    graph_type_Directed,
+    graph_type_Undirected
+}graph_type;
 
-SNGraph* newGraph(graph_storage_type_e type, graph_vertex_count count);
+typedef struct graph_properties_struct{
+    graph_type               graphType;
+    graph_storage_type_e     storageType;
+}graph_properties;
+
+SNGraph* newGraph(graph_properties *properties, graph_vertex_count count);
 SNGraphVertex* addVertex(SNGraph *graph, const char* name);
 SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vertex2, void* data);
 void displayGraph(SNGraph *graph);
