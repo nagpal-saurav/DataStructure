@@ -16,10 +16,12 @@ SNGraph* createSampleGraphMatrix();
 int main(int argc, const char * argv[]) {
     // insert code here...
     SNGraph* graph_list = createSampleGraphList();
+    printf("Graph List********************************");
     displayGraph(graph_list);
     releaseGraph(&graph_list);
     
     SNGraph* graph_matrix = createSampleGraphMatrix();
+    printf("Graph Matrix********************************");
     displayGraph(graph_matrix);
     releaseGraph(&graph_matrix);
     return 0;
@@ -27,7 +29,7 @@ int main(int argc, const char * argv[]) {
 
 SNGraph* createSampleGraphList(){
     graph_properties *graphProperties = calloc(sizeof(graph_properties), 1);
-    graphProperties->graphType = graph_type_Undirected;
+    graphProperties->graphType = graph_type_Directed;
     graphProperties->storageType = graph_storage_adjacency_list;
     SNGraph* graph_list = newGraph(graphProperties, 7);
     SNGraphVertex* delhiVertex = addVertex(graph_list, "Delhi");
