@@ -43,6 +43,7 @@ struct graph_adjacency_head_struct{
 bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex);
 int findVertexIndex(SNGraph* graph, SNGraphVertex* vertex);
 adjacency_list* newAdjacencyEdge(SNGraphVertex* vertex);
+bool addEdgeBetweenTheVertex(SNGraph* graph, SNGraphVertex* vertex1, SNGraphVertex* vertex2, void* data);
 
 SNGraph* newGraph(graph_properties *properties, graph_vertex_count count){
     SNGraph* newGraph = (SNGraph*) malloc(sizeof(SNGraph));
@@ -104,23 +105,19 @@ SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vert
             int index2 = findVertexIndex(graph, vertex2);
             if(index1 != Invalid_Index && index2 != Invalid_Index){
                 int** graphBuf = (int**)graph->graph_data->graph;
-                graphBuf[index1][index2] = graphBuf[index2][index1] = *(int*)data;
+                if(graph->graph_data->type == graph_type_Directed){
+                    graphBuf[index1][index2] = *(int*)data;
+                }else{
+                    graphBuf[index1][index2] = graphBuf[index2][index1] = *(int*)data;
+                }
+                
             }
             break;
         }
         case graph_storage_adjacency_list:{
-            int index1 = findVertexIndex(graph, vertex1);
-            if(index1 != Invalid_Index){
-                adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
-                adjacency_list* newEdge = newAdjacencyEdge(vertex2);
-                newEdge->data = data;
-                if(graphBuf[index1]->degreeOfvertex == 0){
-                    graphBuf[index1]->headVertex = newEdge;
-                }else{
-                    newEdge->next_vertex = graphBuf[index1]->headVertex->next_vertex;
-                    graphBuf[index1]->headVertex->next_vertex = newEdge;
-                }
-                graphBuf[index1]->degreeOfvertex++;
+            addEdgeBetweenTheVertex(graph, vertex1, vertex2, data);
+            if(graph->graph_data->type == graph_type_Undirected){
+                addEdgeBetweenTheVertex(graph, vertex2, vertex1, data);
             }
             break;
         }
@@ -249,4 +246,23 @@ adjacency_list* newAdjacencyEdge(SNGraphVertex* vertex){
     newEdge->toVertex = vertex;
     newEdge->next_vertex = NULL;
     return newEdge;
+}
+
+bool addEdgeBetweenTheVertex(SNGraph* graph, SNGraphVertex* vertex1, SNGraphVertex* vertex2, void* data){
+    bool isAdded = false;
+    int index1 = findVertexIndex(graph, vertex1);
+    if(index1 != Invalid_Index){
+        adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
+        adjacency_list* newEdge = newAdjacencyEdge(vertex2);
+        newEdge->data = data;
+        if(graphBuf[index1]->degreeOfvertex == 0){
+            graphBuf[index1]->headVertex = newEdge;
+        }else{
+            newEdge->next_vertex = graphBuf[index1]->headVertex->next_vertex;
+            graphBuf[index1]->headVertex->next_vertex = newEdge;
+        }
+        graphBuf[index1]->degreeOfvertex++;
+        isAdded = true;
+    }
+    return isAdded;
 }
