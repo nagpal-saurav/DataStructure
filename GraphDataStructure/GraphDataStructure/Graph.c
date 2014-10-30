@@ -13,31 +13,45 @@
 
 #define  matrix_count       2u
 #define  Invalid_Index      -1
-
+/*
+ *Graph Typedef
+ */
 typedef struct graph_adjacency_list_struct adjacency_list;
 typedef struct graph_adjacency_head_struct adjacency_head;
 
+/*
+ *It contains the graph internal member.
+ */
 struct graph_internal_struct{
-    graph_storage_type_e  storageType;
-    graph_type            type;
-    graph_vertex_count    currentCount;
-    void                  **vertices;
-    void                  **graph;
+    graph_storage_type_e  storageType; //Storage type for graph
+    graph_type            type;         //Type  of graph
+    graph_vertex_count    currentCount; //Current Count of vertices added in graph
+    void                  **vertices;   //Array contains  all the vertices of graph
+    void                  **graph;      //refrence for all the edges of graph and structure depend upon the storage type
 };
 
+/*
+ *It contains the adjacency matrix member.
+ */
 typedef struct adjacency_matrix{
-    int     **graph_matrix;
+    int     **graph_matrix; //2-D array for adjacency Matrix
 }graph_matrix;
 
+/*
+ *This structure represent the link list for adjacency list.
+ */
 struct graph_adjacency_list_struct{
-    SNGraphVertex       *toVertex;
-    void*               data;
-    adjacency_list      *next_vertex;
+    SNGraphVertex       *toVertex;   //refrence for the vertex
+    void*               data;        //any Data related to relationship like for weighted graph weight
+    adjacency_list      *next_vertex; //Pointer to next vertex
 };
 
+/*
+ *This structure represent the head of adjacency list.
+ */
 struct graph_adjacency_head_struct{
-    int                 degreeOfvertex;
-    adjacency_list      *headVertex;
+    int                 degreeOfvertex; // It will have degree of vertex
+    adjacency_list      *headVertex;    // It contain refrence for head for all the vertices
 };
 
 bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex);
