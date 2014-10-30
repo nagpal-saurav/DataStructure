@@ -109,18 +109,21 @@ bool addEdgeBetweenTheVertex(SNGraph* graph, SNGraphVertex* vertex1, SNGraphVert
  *Private Method Decleration End
  ********************************/
 
-
+//allocate a new graph and return the refernce for it
 SNGraph* newGraph(graph_properties *properties, graph_vertex_count count){
     SNGraph* newGraph = (SNGraph*) malloc(sizeof(SNGraph));
     if(!newGraph){
         return NULL;
     }
+    //Set the properties for the graph
     newGraph->graph_data = (graph_internal*) malloc(sizeof(graph_internal));
     newGraph->graph_data->type = properties->graphType;
     newGraph->graph_data->storageType = properties->storageType;
     newGraph->vertexCount = count;
     newGraph->graph_data->currentCount = 0;
+    //allocate a space for vertices of garph(array)
     newGraph->graph_data->vertices = malloc(sizeof(SNGraphVertex*) * count);
+    
     switch (properties->storageType) {
         case graph_storage_adjacency_matrix:{
             int** graph_matrix = calloc(sizeof(int*), count);
@@ -147,6 +150,7 @@ SNGraph* newGraph(graph_properties *properties, graph_vertex_count count){
     return newGraph;
 }
 
+//add a vertex in a graph
 SNGraphVertex* addVertex(SNGraph *graph, const char* name){
     SNGraphVertex* vertex = (SNGraphVertex*)malloc(sizeof(SNGraphVertex));
     vertex->vertexName = malloc(strlen(name));
@@ -159,6 +163,7 @@ SNGraphVertex* addVertex(SNGraph *graph, const char* name){
     return NULL;
 }
 
+//add a edge in a graph between the vertex
 SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vertex2, void* data){
     SNGraphEdge* edge = (SNGraphEdge*)malloc(sizeof(SNGraphEdge));
     if(vertex1 == vertex2){
@@ -192,6 +197,7 @@ SNGraphEdge* addEdge(SNGraph *graph, SNGraphVertex *vertex1, SNGraphVertex *vert
     
 }
 
+//prints all the vertices with its connected neighbour
 void displayGraph(SNGraph *graph){
     if(!graph){
         printf("No Graph data");
@@ -237,6 +243,7 @@ void displayGraph(SNGraph *graph){
     }
 }
 
+//release the memory used by graph
 void releaseGraph(SNGraph **graphPtr){
     SNGraph* graph = *graphPtr;
     if(!graph){
@@ -282,7 +289,10 @@ void releaseGraph(SNGraph **graphPtr){
 /*
  *PRIVATE FUNCTION
  */
+
+//add a vertex in a vertices array of graph
 bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex){
+    //Check the number of added vertices count if less than total then add at last index
     int currentIndex = graph->graph_data->currentCount;
     if(currentIndex < graph->vertexCount){
         graph->graph_data->vertices[currentIndex] = vertex;
@@ -292,6 +302,7 @@ bool addVertexToGraphVertices(SNGraph *graph, SNGraphVertex* vertex){
     return false;
 }
 
+//find the index of vertex in graph vertices array
 int findVertexIndex(SNGraph* graph, SNGraphVertex* vertex){
     int index = -1;
     int currentIndex = graph->graph_data->currentCount;
@@ -306,6 +317,7 @@ int findVertexIndex(SNGraph* graph, SNGraphVertex* vertex){
     return index;
 }
 
+//create a new edge for adjacency list and return the refrence of the edge
 adjacency_list* newAdjacencyEdge(SNGraphVertex* vertex){
     adjacency_list* newEdge = (adjacency_list*)malloc(sizeof(adjacency_list));
     newEdge->toVertex = vertex;
@@ -313,8 +325,10 @@ adjacency_list* newAdjacencyEdge(SNGraphVertex* vertex){
     return newEdge;
 }
 
+//add a edge in a adjacency list graph between the vertex
 bool addEdgeBetweenTheVertex(SNGraph* graph, SNGraphVertex* vertex1, SNGraphVertex* vertex2, void* data){
     bool isAdded = false;
+    //Check the index of vertex in graph vertices and add if index is valid
     int index1 = findVertexIndex(graph, vertex1);
     if(index1 != Invalid_Index){
         adjacency_head** graphBuf =(adjacency_head**) graph->graph_data->graph;
